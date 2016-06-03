@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="20" fx:controller="rwt.mandelbrot.MainSceneController">
+<VBox xmlns:fx="http://javafx.com/fxml/1" style="-fx-padding: 10; -fx-spacing: 10;" fx:controller="rwt.mandelbrot.MainSceneController">
     <fx:define>
         <ToggleGroup fx:id="zoomGrp" />
     </fx:define>
@@ -15,11 +15,17 @@
         <FlowPane hgap="10" >
             <children>
                 <Button text="Reset" onAction="#onReset" fx:id="btnReset" />
-                <RadioButton fx:id="rbZIn" selected="true" toggleGroup="$zoomGrp" text="Zoom In" />
-                <RadioButton fx:id="rbZOut" selected="false" toggleGroup="$zoomGrp" text="Zoom Out" />
-                <RadioButton fx:id="rbPan" selected="false" toggleGroup="$zoomGrp" text="Pan" />
+                <Button text="Save" onAction="#onSave" fx:id="btnSave" />
+                <Separator orientation="VERTICAL" /> 
+                <HBox spacing="10">
+                    <children>
+                        <RadioButton fx:id="rbZIn" selected="true" toggleGroup="$zoomGrp" text="Zoom In" />
+                        <RadioButton fx:id="rbZOut" selected="false" toggleGroup="$zoomGrp" text="Zoom Out" />
+                        <RadioButton fx:id="rbPan" selected="false" toggleGroup="$zoomGrp" text="Pan" />
+                    </children>
+                </HBox>
             </children>
         </FlowPane> 
-        <Canvas fx:id="drawing" width="640" height="480" onMouseClicked="#msClick"  />
+        <Canvas fx:id="drawing" width="600" height="600" onMouseClicked="#msClick"  />
     </children>
 </VBox>
