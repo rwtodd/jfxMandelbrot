@@ -5,6 +5,7 @@
  */
 package rwt.mandelbrot;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,8 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 /**
  *
@@ -51,6 +54,24 @@ public class MainSceneController implements Initializable, AutoCloseable {
     }
     
     @FXML
+    private void onSave(ActionEvent event) {
+       FileChooser fileChooser = new FileChooser();
+       fileChooser.setTitle("Save GIF File");
+       fileChooser.getExtensionFilters().add(new ExtensionFilter("GIF Files",".GIF"));
+       fileChooser.setInitialFileName("mandel.gif");
+       File file = fileChooser.showSaveDialog(drawing.getScene().getWindow());
+       if(file == null) return;
+
+       try {
+            Image im = drawing.snapshot(null,null);
+            java.awt.image.BufferedImage bim = javafx.embed.swing.SwingFXUtils.fromFXImage(im, null);       
+            javax.imageio.ImageIO.write(bim, "gif", file);
+       } catch(java.io.IOException e) {
+           System.err.println(e.toString());
+       }
+    }
+    
+    @FXML
     private void msClick(MouseEvent event) {
         // determine a new center...
         double pctX = event.getX()/ drawing.getWidth();
@@ -75,12 +96,12 @@ public class MainSceneController implements Initializable, AutoCloseable {
     private double expanseX = 2.0;
     private double expanseY = 2.0;
         
-    private int computeMandel(double x, double y) {
+    private final int computeMandel(final double x, final double y) {
        int answer = 255;
        double  cx = x;
        double  cy = y;
        while(( cx*cx+cy*cy < 4.0) && (answer > 0)) {
-          double tmp  = cx*cy;
+          final double tmp  = cx*cy;
           cx = cx*cx - cy*cy + x;
           cy = tmp+tmp + y;
           --answer; 
@@ -99,11 +120,11 @@ public class MainSceneController implements Initializable, AutoCloseable {
     private Image drawImagePart(final double startX, final double expX, 
                                 final double startY, final double expY, 
                                 final int wid, final int ht) {
-        WritableImage image = new WritableImage(wid, ht);
-        PixelWriter pw = image.getPixelWriter();
+        final WritableImage image = new WritableImage(wid, ht);
+        final PixelWriter pw = image.getPixelWriter();
         
         for(int y = 0; y < ht; ++y) {
-            double ylevel = startY + y*expY/ht;
+            final double ylevel = startY + y*expY/ht;
             for(int x = 0; x < wid; ++x) {
                 int c = computeMandel(startX + x*expX/wid, ylevel);
                 pw.setColor(x, y, palette[c]);
