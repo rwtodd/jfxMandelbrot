@@ -16,16 +16,21 @@ import java.util.concurrent.Future;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.canvas.*;
 import javafx.scene.control.RadioButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  *
@@ -43,6 +48,38 @@ public class MainSceneController implements Initializable, AutoCloseable {
     private RadioButton rbZOut;
     
     private Color[] palette;
+
+    private PixelSupplier whichSet;
+   
+    @FXML
+    private void selectFractal(ActionEvent event) {
+       try {
+         // Load the fxml file and create a new stage for the popup
+         FXMLLoader loader = new FXMLLoader(MainSceneController.class.getResource("SelectFractalDialog.fxml"));
+         Pane page = (Pane)loader.load();
+         Stage dialogStage = new Stage();
+         dialogStage.setTitle("Select Fractal");
+         dialogStage.initModality(Modality.WINDOW_MODAL);
+         dialogStage.initOwner(drawing.getScene().getWindow());
+         Scene scene = new Scene(page);
+         dialogStage.setScene(scene);
+
+        // Set the person into the controller
+        SelectFractalController controller = loader.getController();
+        controller.setStage(dialogStage);
+ 
+        // Show the dialog and wait until the user closes it
+        dialogStage.showAndWait();
+        
+        // now draw the new scene...
+        whichSet = controller.createSet();
+        onReset(null);
+
+      } catch (Exception e) {
+            // Exception gets thrown if the fxml file could not be loaded
+            e.printStackTrace();
+      }
+    }
     
     @FXML
     private void onReset(ActionEvent event) {
@@ -96,19 +133,6 @@ public class MainSceneController implements Initializable, AutoCloseable {
     private double expanseX = 2.0;
     private double expanseY = 2.0;
         
-    private final int computeMandel(final double x, final double y) {
-       int answer = 255;
-       double  cx = x;
-       double  cy = y;
-       while(( cx*cx+cy*cy < 4.0) && (answer > 0)) {
-          final double tmp  = cx*cy;
-          cx = cx*cx - cy*cy + x;
-          cy = tmp+tmp + y;
-          --answer; 
-       }
-       return answer; 
-    }
-    
     private void displayScenePart(Image im, double x, double y) {
         final GraphicsContext gc = drawing.getGraphicsContext2D();
         gc.drawImage(im, x, y);
@@ -119,14 +143,15 @@ public class MainSceneController implements Initializable, AutoCloseable {
     
     private Image drawImagePart(final double startX, final double expX, 
                                 final double startY, final double expY, 
-                                final int wid, final int ht) {
+                                final int wid, final int ht,
+                                final PixelSupplier ps) {
         final WritableImage image = new WritableImage(wid, ht);
         final PixelWriter pw = image.getPixelWriter();
         
         for(int y = 0; y < ht; ++y) {
             final double ylevel = startY + y*expY/ht;
             for(int x = 0; x < wid; ++x) {
-                int c = computeMandel(startX + x*expX/wid, ylevel);
+                int c = ps.colorPixel(startX + x*expX/wid, ylevel);
                 pw.setColor(x, y, palette[c]);
             }
         }
@@ -158,7 +183,8 @@ public class MainSceneController implements Initializable, AutoCloseable {
                                               sceneULY + _ypct*expY,
                                               expY,
                                               wid,
-                                              ht);
+                                              ht,
+                                              whichSet);
                       
                       Platform.runLater(() -> { 
                            displayScenePart(i,_xpct*wid,_ypct*ht); 
@@ -178,6 +204,7 @@ public class MainSceneController implements Initializable, AutoCloseable {
         for(int idx = 0; idx < 256; ++idx) {
             palette[idx] = Color.grayRgb(idx);
         }
+        whichSet = new MandelbrotSet();
         drawScene();
     }    
 

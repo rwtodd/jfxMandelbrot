@@ -16,6 +16,7 @@
             <children>
                 <Button text="Reset" onAction="#onReset" fx:id="btnReset" />
                 <Button text="Save" onAction="#onSave" fx:id="btnSave" />
+                <Button text="Fractal" onAction="#selectFractal" />
                 <Separator orientation="VERTICAL" /> 
                 <HBox spacing="10">
                     <children>

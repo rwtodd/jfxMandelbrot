@@ -35,7 +35,7 @@ public class JFXMandelbrot extends Application {
     }
 
     @Override
-    public void stop() {
+    public void stop() throws Exception {
         if(controller != null) {
             try {
                 controller.close();
@@ -43,6 +43,7 @@ public class JFXMandelbrot extends Application {
                 System.err.println("Problem closing! " + ex.toString());
             }
         }
+        super.stop();
     }
     
     /**
