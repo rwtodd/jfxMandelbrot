@@ -5,6 +5,7 @@
  */
 package rwt.mandelbrot;
 
+import rwt.mandelbrot.algo.*;
 import javafx.beans.Observable;
 import javafx.util.converter.NumberStringConverter;
 import javafx.beans.property.StringProperty;
@@ -56,6 +57,9 @@ public class AlgorithmSelector {
                 break;
             case "Julia Exp Set":
                 cached = new JuliaExpSet(param1.get(), param2.get());
+                break;
+            case "Mandelbrot VarDepth":
+                cached = new MandelVarDepth((int)param1.get());
                 break;
             default:
                 cached = new MandelbrotSet();
