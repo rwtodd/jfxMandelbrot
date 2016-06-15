@@ -14,6 +14,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +23,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.canvas.*;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -31,6 +34,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.converter.NumberStringConverter;
 
 /**
  *
@@ -47,48 +51,41 @@ public class MainSceneController implements Initializable, AutoCloseable {
     @FXML
     private RadioButton rbZOut;
     
-    private Color[] palette;
-
-    private PixelSupplier whichSet;
-   
-    @FXML
-    private void selectFractal(ActionEvent event) {
-       try {
-         // Load the fxml file and create a new stage for the popup
-         FXMLLoader loader = new FXMLLoader(MainSceneController.class.getResource("SelectFractalDialog.fxml"));
-         Pane page = (Pane)loader.load();
-         Stage dialogStage = new Stage();
-         dialogStage.setTitle("Select Fractal");
-         dialogStage.initModality(Modality.WINDOW_MODAL);
-         dialogStage.initOwner(drawing.getScene().getWindow());
-         Scene scene = new Scene(page);
-         dialogStage.setScene(scene);
-
-        // Set the person into the controller
-        SelectFractalController controller = loader.getController();
-        controller.setStage(dialogStage);
- 
-        // Show the dialog and wait until the user closes it
-        dialogStage.showAndWait();
-        
-        // now draw the new scene...
-        whichSet = controller.createSet();
-        onReset(null);
-
-      } catch (Exception e) {
-            // Exception gets thrown if the fxml file could not be loaded
-            e.printStackTrace();
-      }
-    }
+    @FXML 
+    private TextField txtCX; // bound to sceneX, center of pic
+    @FXML 
+    private TextField txtCY; // bound to sceneY, center of pic
+    @FXML 
+    private TextField txtWid; // bound to expanseX
+    @FXML 
+    private TextField txtHt; // bound to expanseY
     
+    private Color[] palette;
+       
     @FXML
     private void onReset(ActionEvent event) {
-       sceneX =  -0.5;
-       sceneY =  0.0;
-       expanseX = 2.0;
-       expanseY = 2.0;
+       sceneX.set(0.0);
+       sceneY.set(0.0);
+       expanseX.set(2.0);
+       expanseY.set(2.0);
        drawScene();
     }
+   
+    @FXML
+    private javafx.scene.control.ChoiceBox<String> which;
+    
+    @FXML
+    private javafx.scene.control.TextField arg1;
+
+    @FXML
+    private javafx.scene.control.TextField arg2;
+    
+    @FXML
+    private void onRedraw(ActionEvent event) {
+        drawScene();    
+    }
+    
+    private AlgorithmSelector algos;
     
     @FXML
     private void onSave(ActionEvent event) {
@@ -113,25 +110,25 @@ public class MainSceneController implements Initializable, AutoCloseable {
         // determine a new center...
         double pctX = event.getX()/ drawing.getWidth();
         double pctY = event.getY()/ drawing.getHeight();
-        sceneX = sceneX + (expanseX*(pctX - 0.5));
-        sceneY = sceneY + (expanseY*(pctY - 0.5));
+        sceneX.set(sceneX.get() + (expanseX.get()*(pctX - 0.5)));
+        sceneY.set(sceneY.get() + (expanseY.get()*(pctY - 0.5)));
         
         // now possibly rescale ...
         if(rbZIn.isSelected()) {
-            expanseX = expanseX * 0.5;
-            expanseY = expanseY * 0.5;
+            expanseX.set(expanseX.get() * 0.5);
+            expanseY.set(expanseY.get() * 0.5);
         }else if (rbZOut.isSelected()) {
-            expanseX = expanseX * 2.0;
-            expanseY = expanseY * 2.0;
+            expanseX.set(expanseX.get() * 2.0);
+            expanseY.set(expanseY.get() * 2.0);
         }
         
         drawScene();
     }
     
-    private double sceneX = -0.5;
-    private double sceneY = 0.0;
-    private double expanseX = 2.0;
-    private double expanseY = 2.0;
+    private DoubleProperty sceneX;
+    private DoubleProperty sceneY;
+    private DoubleProperty expanseX;
+    private DoubleProperty expanseY;
         
     private void displayScenePart(Image im, double x, double y) {
         final GraphicsContext gc = drawing.getGraphicsContext2D();
@@ -165,13 +162,14 @@ public class MainSceneController implements Initializable, AutoCloseable {
         }
         futures.clear();
         
-        final double expX = expanseX*0.5;
-        final double expY = expanseY*0.5;
-        final double sceneULX = sceneX - expX;
-        final double sceneULY = sceneY - expY;
+        final double expX = expanseX.get()*0.5;
+        final double expY = expanseY.get()*0.5;
+        final double sceneULX = sceneX.get() - expX;
+        final double sceneULY = sceneY.get() - expY;
         final int wid = (int)(drawing.getWidth()/2.0);
         final int ht = (int)(drawing.getHeight()/2.0);
-                
+        final PixelSupplier supplier = algos.getSupplier();
+        
         // submit new work...
         for(int ypct = 0; ypct < 2; ypct++) {
             final int _ypct = ypct;
@@ -184,7 +182,7 @@ public class MainSceneController implements Initializable, AutoCloseable {
                                               expY,
                                               wid,
                                               ht,
-                                              whichSet);
+                                              supplier);
                       
                       Platform.runLater(() -> { 
                            displayScenePart(i,_xpct*wid,_ypct*ht); 
@@ -198,13 +196,24 @@ public class MainSceneController implements Initializable, AutoCloseable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        sceneX = new SimpleDoubleProperty(0.0);
+        sceneY = new SimpleDoubleProperty(0.0);
+        expanseX = new SimpleDoubleProperty(2.0);
+        expanseY = new SimpleDoubleProperty(2.0);
+    
+        // bi-directional bindings to the UI for the scene params...
+        txtCX.textProperty().bindBidirectional(sceneX, new NumberStringConverter());
+        txtCY.textProperty().bindBidirectional(sceneY, new NumberStringConverter());
+        txtWid.textProperty().bindBidirectional(expanseX, new NumberStringConverter());
+        txtHt.textProperty().bindBidirectional(expanseY, new NumberStringConverter());
+        
         futures = new ArrayList<>();
         threadpool = Executors.newFixedThreadPool(4);
         palette = new Color[256];
         for(int idx = 0; idx < 256; ++idx) {
             palette[idx] = Color.grayRgb(idx);
         }
-        whichSet = new MandelbrotSet();
+        algos = new AlgorithmSelector(which.valueProperty(), arg1.textProperty(), arg2.textProperty());
         drawScene();
     }    
 
