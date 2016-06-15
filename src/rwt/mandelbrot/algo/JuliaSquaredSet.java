@@ -3,17 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rwt.mandelbrot;
+package rwt.mandelbrot.algo;
+
+import rwt.mandelbrot.PixelSupplier;
 
 /**
- *
- * @author richa
+ * Implements the class of Julia sets that squares the 
+ * accumulator and adds a constant.  x^2 + c
+ * @author Richard Todd
  */
-public class JuliaExpSet implements PixelSupplier  {
+public final class JuliaSquaredSet implements PixelSupplier {
     final double addX;
     final double addY;
     
-    JuliaExpSet(double xloc, double yloc) {
+    public JuliaSquaredSet(double xloc, double yloc) {
         addX = xloc;
         addY = yloc;
     }
@@ -24,9 +27,9 @@ public class JuliaExpSet implements PixelSupplier  {
        double  cx = x;
        double  cy = y;
        while(( cx*cx+cy*cy < 4.0) && (answer > 0)) {
-          final double tmp  = Math.exp(cx);
-          cx = tmp * Math.cos(cy) + addX;
-          cy = tmp * Math.sin(cy) + addY;
+          final double tmp  = cx*cy;
+          cx = cx*cx - cy*cy + addX;
+          cy = tmp+tmp + addY;
           --answer; 
        }
        return answer; 

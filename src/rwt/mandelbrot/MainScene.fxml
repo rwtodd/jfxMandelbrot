@@ -44,6 +44,7 @@
                <items>
                   <FXCollections fx:factory="observableArrayList">
                         <String fx:value="Mandelbrot Set" />
+                        <String fx:value="Mandelbrot VarDepth" />
                         <String fx:value="Julia Squared Set" />
                         <String fx:value="Julia Exp Set" />
                  </FXCollections>
