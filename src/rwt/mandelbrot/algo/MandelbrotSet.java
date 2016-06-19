@@ -1,14 +1,14 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright Richard Todd. I put the code under the
+ * GPL v2.0.  See the LICENSE file in the repository.
+ * for more information.
  */
 package rwt.mandelbrot.algo;
 
 import rwt.mandelbrot.PixelSupplier;
 
 /**
- * Implements the standard mandlebrot set:  x^2 + location.
+ * Implements the standard mandelbrot set:  x^2 + location.
  * @author Richard Todd
  */
 public final class MandelbrotSet implements PixelSupplier {
