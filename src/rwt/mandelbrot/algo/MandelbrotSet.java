@@ -12,19 +12,30 @@ import rwt.mandelbrot.PixelSupplier;
  * @author Richard Todd
  */
 public final class MandelbrotSet implements PixelSupplier {
-
+    private final int depth;
+    private final double escape;
+    
     @Override
     public int colorPixel(final double x, final double y) {
-       int answer = 255;
+       int answer = depth - 1;
        double  cx = x;
        double  cy = y;
-       while(( cx*cx+cy*cy < 4.0) && (answer > 0)) {
+       while(( cx*cx+cy*cy < escape) && (answer > 0)) {
           final double tmp  = cx*cy;
           cx = cx*cx - cy*cy + x;
           cy = tmp+tmp + y;
           --answer; 
        }
+       // scale answer to the 0 - 255 range...
+       answer = (int)(256.0 * answer / depth);
+       if(answer > 255) answer = 255;
+       
        return answer; 
     }
-    
+   
+    public MandelbrotSet(int d, double e) {
+        if(d < 1) d = 255;
+        depth = d;
+        escape = e;
+    } 
 }

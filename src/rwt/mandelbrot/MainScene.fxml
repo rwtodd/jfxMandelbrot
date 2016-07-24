@@ -3,7 +3,7 @@
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
-<?import javafx.scene.canvas.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
@@ -33,41 +33,45 @@
     </top>
     <left>
         <VBox spacing="10" >
-           <GridPane alignment="center" hgap="10" vgap="10">
+           <GridPane alignment="CENTER_LEFT" hgap="10" vgap="10">
                <padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
 
                <Label text="Fractal:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-               <Label text="Arg 1:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-               <Label text="Arg 2:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+               <Label text="C:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+               <Label text="Escape Level:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
 
-               <ChoiceBox GridPane.rowIndex="0" GridPane.columnIndex="1" fx:id="which">
+               <ChoiceBox GridPane.rowIndex="0" GridPane.columnIndex="1"  GridPane.columnSpan="2"  fx:id="which">
                <items>
                   <FXCollections fx:factory="observableArrayList">
                         <String fx:value="Mandelbrot Set" />
-                        <String fx:value="Mandelbrot VarDepth" />
                         <String fx:value="Julia Squared Set" />
-                        <String fx:value="Julia Exp Set" />
+                        <String fx:value="Julia ExpZ Set" />
+                        <String fx:value="Julia Z*ExpZ Set" />
                  </FXCollections>
                </items>   
                <value><String fx:value="Mandelbrot Set"/></value> 
                </ChoiceBox>  
     
-               <TextField GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true" fx:id="arg1" text="0"/>      
-               <TextField GridPane.rowIndex="2" GridPane.columnIndex="1" editable="true" fx:id="arg2" text="0" />
-           </GridPane>
+               <TextField prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true" fx:id="arg1" text="0" />      
+               <TextField prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="2" editable="true" fx:id="arg2" text="0" />
+               <TextField prefWidth="50" GridPane.rowIndex="2" GridPane.columnIndex="1" editable="true" fx:id="escVal" text="4.0" />
+            </GridPane>
            
-           <GridPane alignment="center" hgap="10" vgap="10">
+           <GridPane alignment="CENTER_LEFT" hgap="10" vgap="10">
                <padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
 
-               <Label text="Center X:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-               <Label text="Center Y:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-               <Label text="Width:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-               <Label text="Height:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+               <Label text="Center" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+               <Label text="Span" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+               <Label text="Image Dim" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+               <Label text="Image Depth:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
                     
-               <TextField GridPane.rowIndex="0" GridPane.columnIndex="1" editable="true" fx:id="txtCX" />      
-               <TextField GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true" fx:id="txtCY"  />
-               <TextField GridPane.rowIndex="2" GridPane.columnIndex="1" editable="true" fx:id="txtWid" />      
-               <TextField GridPane.rowIndex="3" GridPane.columnIndex="1" editable="true" fx:id="txtHt"  />
+               <TextField prefWidth="50" GridPane.rowIndex="0" GridPane.columnIndex="1" editable="true" fx:id="txtCX" />      
+               <TextField prefWidth="50" GridPane.rowIndex="0" GridPane.columnIndex="2" editable="true" fx:id="txtCY"  />
+               <TextField prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true" fx:id="txtWid" />      
+               <TextField prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="2" editable="true" fx:id="txtHt"  />
+               <TextField prefWidth="50" GridPane.rowIndex="2" GridPane.columnIndex="1" editable="true" fx:id="txtImWid" />      
+               <TextField prefWidth="50" GridPane.rowIndex="2" GridPane.columnIndex="2" editable="true" fx:id="txtImHt"  />     
+               <TextField prefWidth="50" GridPane.rowIndex="3" GridPane.columnIndex="1" editable="true" fx:id="txtImDpth"  />
            </GridPane>
            
             <Button text="Reset" onAction="#onReset" />
@@ -75,6 +79,8 @@
         </VBox>
     </left>
     <center>
-        <Canvas fx:id="drawing" width="600" height="600" onMouseClicked="#msClick"  />
+        <ScrollPane>
+            <ImageView  fx:id="drawing" onMouseClicked="#msClick" />
+        </ScrollPane>
     </center>
 </BorderPane>

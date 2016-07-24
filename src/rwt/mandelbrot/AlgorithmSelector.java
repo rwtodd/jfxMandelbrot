@@ -7,12 +7,11 @@ package rwt.mandelbrot;
 
 import rwt.mandelbrot.algo.*;
 import javafx.beans.Observable;
-import javafx.util.converter.NumberStringConverter;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.Property;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
@@ -24,28 +23,29 @@ public class AlgorithmSelector {
 
     private PixelSupplier cached;
     
-    private final StringProperty fractal;
-    private final DoubleProperty param1;
-    private final DoubleProperty param2;
+    final StringProperty fractal;
+    final DoubleProperty param1;
+    final DoubleProperty param2;
+    final IntegerProperty depth; 
+    final DoubleProperty escape;
     
     private synchronized void invalidateCache(Observable ob, Object o, Object n) {
         cached = null;
     }
    
-    public AlgorithmSelector(Property<String> choice, Property<String> arg1, Property<String> arg2) {
+    public AlgorithmSelector() {
         cached = null;
-        fractal = new SimpleStringProperty();
-        param1 = new SimpleDoubleProperty();
-        param2 = new SimpleDoubleProperty();
-        
-        fractal.bindBidirectional(choice);
-        Bindings.bindBidirectional(arg1,param1, new NumberStringConverter());
-        Bindings.bindBidirectional(arg2,param2, new NumberStringConverter());
+        fractal = new SimpleStringProperty("Mandelbrot Set");
+        param1 = new SimpleDoubleProperty(0.0);
+        param2 = new SimpleDoubleProperty(0.0);
+        depth = new SimpleIntegerProperty(256);
+        escape = new SimpleDoubleProperty(4.0);
         
         fractal.addListener(this::invalidateCache);
         param1.addListener(this::invalidateCache);
         param2.addListener(this::invalidateCache);
-        
+        depth.addListener(this::invalidateCache);
+        escape.addListener(this::invalidateCache);
     }
     
     public synchronized PixelSupplier getSupplier() {
@@ -53,16 +53,16 @@ public class AlgorithmSelector {
                 
         switch(fractal.getValue()) {
             case "Julia Squared Set":
-                cached = new JuliaSquaredSet(param1.get(), param2.get());
+                cached = new JuliaSquaredSet(param1.get(), param2.get(), depth.get(), escape.get());
                 break;
-            case "Julia Exp Set":
-                cached = new JuliaExpSet(param1.get(), param2.get());
+            case "Julia ExpZ Set":
+                cached = new JuliaExpSet(param1.get(), param2.get(), depth.get(), escape.get());
                 break;
-            case "Mandelbrot VarDepth":
-                cached = new MandelVarDepth((int)param1.get());
+            case "Julia Z*ExpZ Set":
+                cached = new JuliaZExpSet(param1.get(), param2.get(), depth.get(), escape.get());
                 break;
             default:
-                cached = new MandelbrotSet();
+                cached = new MandelbrotSet(depth.get(), escape.get());
                 break;
         }
         
