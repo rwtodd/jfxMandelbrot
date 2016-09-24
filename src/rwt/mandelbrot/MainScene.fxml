@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.net.URL?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.image.*?>
@@ -9,7 +10,14 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.collections.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="rwt.mandelbrot.MainSceneController">
+<BorderPane xmlns="http://javafx.com/javafx/8" 
+            xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="rwt.mandelbrot.MainSceneController" 
+            styleClass="root">
+    <stylesheets>
+        <URL value="@MainScene.css" />
+    </stylesheets>
+    
     <padding><Insets top="10" right="0" bottom="0" left="10"/></padding>
     <top>
     <fx:define>
@@ -34,7 +42,9 @@
     <left>
         <VBox spacing="10" >
            <GridPane alignment="CENTER_LEFT" hgap="10" vgap="10">
-               <padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
+               <VBox.margin>
+                   <Insets top="25" right="25" bottom="10" left="25"/>
+               </VBox.margin>
 
                <Label text="Fractal:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
                <Label text="C:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
@@ -58,7 +68,9 @@
             </GridPane>
            
            <GridPane alignment="CENTER_LEFT" hgap="10" vgap="10">
-               <padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
+               <VBox.margin>
+                   <Insets top="25" right="25" bottom="10" left="25"/>
+               </VBox.margin>
 
                <Label text="Center" GridPane.rowIndex="0" GridPane.columnIndex="0" />
                <Label text="Span" GridPane.rowIndex="1" GridPane.columnIndex="0" />
@@ -74,8 +86,16 @@
                <TextField prefWidth="50" GridPane.rowIndex="3" GridPane.columnIndex="1" editable="true" fx:id="txtImDpth"  />
            </GridPane>
            
-            <Button text="Reset" onAction="#onReset" />
-            <Button text="Redraw" onAction="#onRedraw" />
+           <Button styleClass="wide" maxWidth="9999"  text="Reset" onAction="#onReset" >
+               <VBox.margin>
+                   <Insets left="25" right="25" />
+               </VBox.margin> 
+           </Button>
+            <Button styleClass="wide" maxWidth="9999" text="Redraw" onAction="#onRedraw">
+               <VBox.margin>
+                   <Insets left="25" right="25" />
+               </VBox.margin>   
+            </Button>
         </VBox>
     </left>
     <center>

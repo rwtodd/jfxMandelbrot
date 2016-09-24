@@ -24,9 +24,10 @@ public class JFXMandelbrot extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        Pane root = fxmlLoader.load(getClass().getResource("MainScene.fxml").openStream());
-        controller = (AutoCloseable) fxmlLoader.getController();        
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainScene.fxml"));
+        Pane root = (Pane)fxmlLoader.load();
+        controller = (AutoCloseable) fxmlLoader.getController();
+        
         stage.setTitle("Mandelbrot Explorer");
         Scene scene = new Scene(root);
         
