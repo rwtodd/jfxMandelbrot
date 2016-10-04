@@ -5,13 +5,11 @@
  */
 package rwt.mandelbrot.algo;
 
-import rwt.mandelbrot.PixelSupplier;
-
 /**
  * Z * e^Z + C  Julia ZExp set
  * @author richa
  */
-public final class JuliaZExpSet implements PixelSupplier  {
+public final class JuliaZExpSet extends SimpleAlgo {
     final double addX;
     final double addY;
     final int depth;
@@ -42,10 +40,10 @@ public final class JuliaZExpSet implements PixelSupplier  {
           --answer; 
        }
        
-       // scale answer to the 0 - 255 range...
-       answer = (int)(256.0 * answer / depth);
-       if(answer > 255) answer = 255;
-       
+       // scale answer to the 0 - paletteSize range...
+       answer = (int)((double)paletteSize * answer / depth);
+       if(answer >= paletteSize) answer = (paletteSize-1);
+
        return answer; 
     }
 

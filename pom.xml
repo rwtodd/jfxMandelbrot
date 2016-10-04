@@ -45,6 +45,12 @@
                 </configuration>
             </plugin>   
         </plugins>
-    </build>   
-    
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>com.waywardcode</groupId>
+            <artifactId>palette-designer</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
 </project>

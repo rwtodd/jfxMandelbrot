@@ -9,7 +9,7 @@ package rwt.mandelbrot;
  *
  * @author richa
  */
-@FunctionalInterface
 public interface PixelSupplier {
     int colorPixel(final double x, final double y);
+    void setColorDepth(int d);
 }

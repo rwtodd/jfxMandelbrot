@@ -5,13 +5,11 @@
  */
 package rwt.mandelbrot.algo;
 
-import rwt.mandelbrot.PixelSupplier;
-
 /**
  * Implements the standard mandelbrot set:  x^2 + location.
  * @author Richard Todd
  */
-public final class MandelbrotSet implements PixelSupplier {
+public final class MandelbrotSet extends SimpleAlgo {
     private final int depth;
     private final double escape;
     
@@ -26,9 +24,10 @@ public final class MandelbrotSet implements PixelSupplier {
           cy = tmp+tmp + y;
           --answer; 
        }
-       // scale answer to the 0 - 255 range...
-       answer = (int)(256.0 * answer / depth);
-       if(answer > 255) answer = 255;
+       
+       // scale answer to the 0 - paletteSize range...
+       answer = (int)((double)paletteSize * answer / depth);
+       if(answer >= paletteSize) answer = (paletteSize-1);
        
        return answer; 
     }

@@ -35,12 +35,12 @@ final class FractalArtist implements AutoCloseable {
     final IntegerProperty imgWid;
     final IntegerProperty imgHt;
     final ObjectProperty<Image> image;
-    
+    final ObjectProperty<Color[]> palette;
+
     private final int numThreads;
     
     private final ExecutorService threadpool;
     private final List<Future<?>> futures;
-    private final Color[] palette;
   
     private final AlgorithmSelector selector;
    
@@ -57,10 +57,11 @@ final class FractalArtist implements AutoCloseable {
         numThreads = Runtime.getRuntime().availableProcessors();
         futures = new ArrayList<>();
         threadpool = Executors.newFixedThreadPool(numThreads);
-        palette = new Color[256];
+        final Color[] defPalette = new Color[256];
         for(int idx = 0; idx < 256; ++idx) {
-            palette[idx] = Color.grayRgb(idx);
+            defPalette[idx] = Color.grayRgb(idx);
         }    
+        palette = new SimpleObjectProperty<>(defPalette);
     }
     
     @Override
@@ -107,12 +108,12 @@ final class FractalArtist implements AutoCloseable {
                                 final double ULY, final double expY, 
                                 final int wid, final int ht, final int startY, final int endY,
                                 final PixelWriter pw, final PixelSupplier ps) {
-        
+        final Color[] pal = palette.get();
         for(int y = startY; y < endY; ++y) {
             final double ylevel = ULY - (y/(double)ht)*expY;
             for(int x = 0; x < wid; ++x) {
                 int c = ps.colorPixel(ULX + (x/(double)wid)*expX, ylevel);
-                pw.setColor(x, y, palette[c]);
+                pw.setColor(x, y, pal[c]);
             }
         }
     }
@@ -132,7 +133,8 @@ final class FractalArtist implements AutoCloseable {
         final int wid = imgWid.get(); 
         final int ht = imgHt.get(); 
         final PixelSupplier supplier = selector.getSupplier();
-
+        supplier.setColorDepth(palette.get().length);
+        
         final WritableImage newimage = new WritableImage(wid, ht);
         final PixelWriter pw = newimage.getPixelWriter();
          

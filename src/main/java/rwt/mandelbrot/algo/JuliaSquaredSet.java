@@ -12,12 +12,11 @@ import rwt.mandelbrot.PixelSupplier;
  * accumulator and adds a constant.  x^2 + c
  * @author Richard Todd
  */
-public final class JuliaSquaredSet implements PixelSupplier {
+public final class JuliaSquaredSet extends SimpleAlgo {
     final double addX;
     final double addY;
     final int depth;
-    final double escape;
-    
+    final double escape;        
     
     public JuliaSquaredSet(double xloc, double yloc, int d, double e) {
         addX = xloc;
@@ -26,6 +25,7 @@ public final class JuliaSquaredSet implements PixelSupplier {
         depth = d;
         escape = e;
     }
+ 
     
     @Override
     public int colorPixel(final double x, final double y) {
@@ -39,9 +39,9 @@ public final class JuliaSquaredSet implements PixelSupplier {
           --answer; 
        }
        
-       // scale answer to the 0 - 255 range...
-       answer = (int)(256.0 * answer / depth);
-       if(answer > 255) answer = 255;
+       // scale answer to the 0 - paletteSize range...
+       answer = (int)((double)paletteSize * answer / depth);
+       if(answer >= paletteSize) answer = (paletteSize-1);
 
        return answer; 
     }

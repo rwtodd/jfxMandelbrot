@@ -5,13 +5,12 @@
  */
 package rwt.mandelbrot.algo;
 
-import rwt.mandelbrot.PixelSupplier;
 
 /**
  *
  * @author richa
  */
-public final class JuliaExpSet implements PixelSupplier  {
+public final class JuliaExpSet extends SimpleAlgo  {
     final double addX;
     final double addY;
     final int depth;
@@ -25,6 +24,8 @@ public final class JuliaExpSet implements PixelSupplier  {
         escape = e;
     }
     
+
+    
     @Override
     public int colorPixel(final double x, final double y) {
        int answer = depth - 1;
@@ -37,9 +38,10 @@ public final class JuliaExpSet implements PixelSupplier  {
           --answer; 
        }
        
-       // scale answer to the 0 - 255 range...
-       answer = (int)(256.0 * answer / depth);
-       if(answer > 255) answer = 255;
+       // scale answer to the 0 - paletteSize range...
+       answer = (int)((double)paletteSize * answer / depth);
+       if(answer >= paletteSize) answer = (paletteSize-1);
+
        
        return answer; 
     }

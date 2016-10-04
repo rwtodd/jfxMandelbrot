@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import com.waywardcode.palette.PaletteDesigner?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" styleClass="mainFxmlClass"  
+      fx:controller="rwt.mandelbrot.PaletteBuilderController">
+    <stylesheets>
+        <URL value="@/fxml/chooserStyles.css"/>
+    </stylesheets>
+    <PaletteDesigner fx:id="designer" />
+    <ButtonBar>
+        <buttons>
+           <Button onAction="#btnApply">Apply</Button>
+           <Button onAction="#btnClose">Close</Button>    
+        </buttons>
+    </ButtonBar>
+</VBox>

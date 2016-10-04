@@ -1,0 +1,19 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+   -fx-spacing: 5pt;
+   -fx-padding: 5pt;
+}
+
+.mainFxmlClass HBox {
+   -fx-spacing: 5pt;
+   -fx-padding: 5pt;
+   -fx-alignment: CENTER_LEFT;   
+}
+
+Rectangle.colorChoice {
+   /* -fx-arc-height: 5; */
+   /* -fx-arc-width: 5;  */
+}

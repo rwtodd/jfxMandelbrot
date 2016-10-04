@@ -18,84 +18,73 @@
         <URL value="@MainScene.css" />
     </stylesheets>
     
-    <padding><Insets top="10" right="0" bottom="0" left="10"/></padding>
-    <top>
+    <padding>
+        <Insets top="10" right="0" bottom="0" left="10"/>
+    </padding>
     <fx:define>
         <ToggleGroup fx:id="zoomGrp" />
     </fx:define>
 
-        <FlowPane hgap="10" >
-            <children>
-                <Button text="Save" onAction="#onSave" fx:id="btnSave" />
-                <Separator orientation="VERTICAL" /> 
-                <HBox spacing="10">
-                    <children>
-                        <RadioButton fx:id="rbZIn" selected="true" toggleGroup="$zoomGrp" text="Zoom In" />
-                        <RadioButton fx:id="rbZOut" selected="false" toggleGroup="$zoomGrp" text="Zoom Out" />
-                        <RadioButton fx:id="rbPan" selected="false" toggleGroup="$zoomGrp" text="Pan" />
-                    </children>
-                </HBox>
-            </children>
-        </FlowPane> 
-
-    </top>
     <left>
         <VBox spacing="10" >
-           <GridPane alignment="CENTER_LEFT" hgap="10" vgap="10">
-               <VBox.margin>
-                   <Insets top="25" right="25" bottom="10" left="25"/>
-               </VBox.margin>
-
-               <Label text="Fractal:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-               <Label text="C:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-               <Label text="Escape Level:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-
-               <ChoiceBox GridPane.rowIndex="0" GridPane.columnIndex="1"  GridPane.columnSpan="2"  fx:id="which">
-               <items>
-                  <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Mandelbrot Set" />
-                        <String fx:value="Julia Squared Set" />
-                        <String fx:value="Julia ExpZ Set" />
-                        <String fx:value="Julia Z*ExpZ Set" />
-                 </FXCollections>
-               </items>   
-               <value><String fx:value="Mandelbrot Set"/></value> 
-               </ChoiceBox>  
-    
-               <TextField prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true" fx:id="arg1" text="0" />      
-               <TextField prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="2" editable="true" fx:id="arg2" text="0" />
-               <TextField prefWidth="50" GridPane.rowIndex="2" GridPane.columnIndex="1" editable="true" fx:id="escVal" text="4.0" />
+            <padding>
+                <Insets top="25" right="25" bottom="10" left="25" />
+            </padding>
+            <HBox alignment="CENTER_LEFT" >
+                <Label text="Fractal:"  maxWidth="9999" HBox.hgrow="ALWAYS" />
+                <ChoiceBox fx:id="which">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Mandelbrot Set" />
+                            <String fx:value="Julia Squared Set" />
+                            <String fx:value="Julia ExpZ Set" />
+                            <String fx:value="Julia Z*ExpZ Set" />
+                        </FXCollections>
+                    </items>   
+                    <value>
+                        <String fx:value="Mandelbrot Set"/>
+                    </value> 
+                </ChoiceBox>                  
+            </HBox>
+            <GridPane alignment="CENTER_LEFT" hgap="10" vgap="10">
+                <Label text="C:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <Label text="Escape Level:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                <TextField prefWidth="50" GridPane.rowIndex="0" GridPane.columnIndex="1" editable="true" fx:id="arg1" text="0" />      
+                <TextField prefWidth="50" GridPane.rowIndex="0" GridPane.columnIndex="2" editable="true" fx:id="arg2" text="0" />
+                <TextField prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true" fx:id="escVal" text="4.0" />
             </GridPane>
-           
-           <GridPane alignment="CENTER_LEFT" hgap="10" vgap="10">
-               <VBox.margin>
-                   <Insets top="25" right="25" bottom="10" left="25"/>
-               </VBox.margin>
+            <Separator orientation="HORIZONTAL"  />
 
-               <Label text="Center" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-               <Label text="Span" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-               <Label text="Image Dim" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-               <Label text="Image Depth:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
-                    
-               <TextField prefWidth="50" GridPane.rowIndex="0" GridPane.columnIndex="1" editable="true" fx:id="txtCX" />      
-               <TextField prefWidth="50" GridPane.rowIndex="0" GridPane.columnIndex="2" editable="true" fx:id="txtCY"  />
-               <TextField prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true" fx:id="txtWid" />      
-               <TextField prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="2" editable="true" fx:id="txtHt"  />
-               <TextField prefWidth="50" GridPane.rowIndex="2" GridPane.columnIndex="1" editable="true" fx:id="txtImWid" />      
-               <TextField prefWidth="50" GridPane.rowIndex="2" GridPane.columnIndex="2" editable="true" fx:id="txtImHt"  />     
-               <TextField prefWidth="50" GridPane.rowIndex="3" GridPane.columnIndex="1" editable="true" fx:id="txtImDpth"  />
-           </GridPane>
+            <GridPane alignment="CENTER_LEFT" hgap="10" vgap="10">
+
+                <Label text="Center:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <Label text="Span:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                <Label text="Image Dim:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <Label text="Image Depth:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                <TextField prefWidth="50" GridPane.rowIndex="0" GridPane.columnIndex="1" editable="true" fx:id="txtCX" />      
+                <TextField prefWidth="50" GridPane.rowIndex="0" GridPane.columnIndex="2" editable="true" fx:id="txtCY"  />
+                <TextField prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true" fx:id="txtWid" />      
+                <TextField prefWidth="50" GridPane.rowIndex="1" GridPane.columnIndex="2" editable="true" fx:id="txtHt"  />
+                <TextField prefWidth="50" GridPane.rowIndex="2" GridPane.columnIndex="1" editable="true" fx:id="txtImWid" />      
+                <TextField prefWidth="50" GridPane.rowIndex="2" GridPane.columnIndex="2" editable="true" fx:id="txtImHt"  />     
+                <TextField prefWidth="50" GridPane.rowIndex="3" GridPane.columnIndex="1" editable="true" fx:id="txtImDpth"  />
+            </GridPane>
+            <Button maxWidth="9999" onAction="#onPalette">Choose Palette</Button>  
+            
+            <Separator orientation="HORIZONTAL"  />
+            <HBox spacing="10">
+                <children>
+                    <RadioButton fx:id="rbZIn" selected="true" toggleGroup="$zoomGrp" text="Zoom In" />
+                    <RadioButton fx:id="rbZOut" selected="false" toggleGroup="$zoomGrp" text="Zoom Out" />
+                    <RadioButton fx:id="rbPan" selected="false" toggleGroup="$zoomGrp" text="Pan" />
+                </children>
+            </HBox>
+            <Separator orientation="HORIZONTAL"  />
            
-           <Button styleClass="wide" maxWidth="9999"  text="Reset" onAction="#onReset" >
-               <VBox.margin>
-                   <Insets left="25" right="25" />
-               </VBox.margin> 
-           </Button>
-            <Button styleClass="wide" maxWidth="9999" text="Redraw" onAction="#onRedraw">
-               <VBox.margin>
-                   <Insets left="25" right="25" />
-               </VBox.margin>   
-            </Button>
+            <Button styleClass="wide" maxWidth="9999"  text="Reset" onAction="#onReset" />
+            <Button styleClass="wide" maxWidth="9999" text="Redraw" onAction="#onRedraw" />
+            <Button text="Save" maxWidth="9999" onAction="#onSave" fx:id="btnSave" />
+ 
         </VBox>
     </left>
     <center>

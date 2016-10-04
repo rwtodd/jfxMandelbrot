@@ -11,7 +11,10 @@ import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -19,6 +22,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.converter.NumberStringConverter;
 
 /**
@@ -59,6 +64,7 @@ public class MainSceneController implements Initializable, AutoCloseable {
     private javafx.scene.control.TextField arg2;
     @FXML
     private javafx.scene.control.TextField escVal;
+    
     
     @FXML
     private void onReset(ActionEvent event) {
@@ -104,7 +110,23 @@ public class MainSceneController implements Initializable, AutoCloseable {
         artist.drawScene();
     }
             
-    
+    @FXML
+    private void onPalette(ActionEvent ae) {
+        try {
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PaletteBuilder.fxml"));
+           Parent root = loader.load();
+           PaletteBuilderController pbc = loader.getController();
+           pbc.tieToParent((Stage)arg1.getScene().getWindow(), artist.palette);
+           Scene sc = new Scene(root);
+           Stage st = new Stage(StageStyle.DECORATED);
+           st.setTitle("Select Palette");
+           st.setScene(sc);
+           st.show();
+           
+        } catch(java.io.IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
     
     private FractalArtist artist;
     
@@ -131,6 +153,8 @@ public class MainSceneController implements Initializable, AutoCloseable {
         artist.drawScene();
     }    
 
+    
+    
     @Override
     public void close() throws Exception {
         artist.close();
