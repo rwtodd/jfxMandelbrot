@@ -81,15 +81,17 @@ public class MainSceneController implements Initializable, AutoCloseable {
     private void onSave(ActionEvent event) {
        FileChooser fileChooser = new FileChooser();
        fileChooser.setTitle("Save GIF File");
-       fileChooser.getExtensionFilters().add(new ExtensionFilter("GIF Files","*.GIF"));
+       fileChooser.getExtensionFilters().addAll(new ExtensionFilter("GIF Files","*.GIF"),
+                                                new ExtensionFilter("PNG Files","*.PNG"));
        fileChooser.setInitialFileName("mandel.gif");
        File file = fileChooser.showSaveDialog(drawing.getScene().getWindow());
        if(file == null) return;
 
        try {
             Image im = drawing.getImage(); //.snapshot(null,null);
-            java.awt.image.BufferedImage bim = javafx.embed.swing.SwingFXUtils.fromFXImage(im, null);       
-            javax.imageio.ImageIO.write(bim, "gif", file);
+            java.awt.image.BufferedImage bim = javafx.embed.swing.SwingFXUtils.fromFXImage(im, null);    
+            String format = file.getName().toLowerCase().endsWith(".png")?"png":"gif";
+            javax.imageio.ImageIO.write(bim, format, file);
        } catch(java.io.IOException e) {
            System.err.println(e.toString());
        }
