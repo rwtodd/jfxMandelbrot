@@ -81,7 +81,7 @@ public class MainSceneController implements Initializable, AutoCloseable {
     private void onSave(ActionEvent event) {
        FileChooser fileChooser = new FileChooser();
        fileChooser.setTitle("Save GIF File");
-       fileChooser.getExtensionFilters().add(new ExtensionFilter("GIF Files",".GIF"));
+       fileChooser.getExtensionFilters().add(new ExtensionFilter("GIF Files","*.GIF"));
        fileChooser.setInitialFileName("mandel.gif");
        File file = fileChooser.showSaveDialog(drawing.getScene().getWindow());
        if(file == null) return;
@@ -116,9 +116,9 @@ public class MainSceneController implements Initializable, AutoCloseable {
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PaletteBuilder.fxml"));
            Parent root = loader.load();
            PaletteBuilderController pbc = loader.getController();
-           pbc.tieToParent((Stage)arg1.getScene().getWindow(), artist.palette);
            Scene sc = new Scene(root);
            Stage st = new Stage(StageStyle.DECORATED);
+           pbc.tieToParent(st, artist.palette);
            st.setTitle("Select Palette");
            st.setScene(sc);
            st.show();

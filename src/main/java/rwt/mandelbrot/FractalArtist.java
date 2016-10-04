@@ -62,6 +62,7 @@ final class FractalArtist implements AutoCloseable {
             defPalette[idx] = Color.grayRgb(idx);
         }    
         palette = new SimpleObjectProperty<>(defPalette);
+        palette.addListener((ob, ov, nv) -> drawScene());
     }
     
     @Override
