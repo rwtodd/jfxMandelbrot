@@ -1,0 +1,53 @@
+plugins {
+  id 'java'
+  id 'application'
+  id 'eclipse'
+  id 'org.openjfx.javafxplugin' version '0.0.13'
+  id 'org.beryx.jlink' version '2.25.0'
+}
+
+repositories {
+        mavenCentral() {
+            content {
+                // this repository contains everything BUT artifacts with group starting with "my.company"
+                excludeGroupByRegex "org\\.rwtodd\\..*"
+            }
+        }
+       mavenLocal {
+          content {
+             // this repository *only* contains artifacts with group "my.company"
+             includeGroupByRegex "org\\.rwtodd\\..*"
+         }
+      }
+}
+
+java {
+  compileJava {
+     options.release = 18
+  }
+}
+
+dependencies {
+    // Use JUnit Jupiter API for testing.
+    // testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    implementation 'org.rwtodd.paldesign:org.rwtodd.paldesign:1.0'
+}
+
+javafx {
+    version = "18.0.1"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ]
+}
+
+application {
+    // Define the main class for the application.
+    mainModule.set('rwt.mandelbrot')
+    mainClass.set('rwt.mandelbrot.JFXMandelbrot')
+//    applicationDefaultJvmArgs = ['-Xmx64m']
+}
+
+jlink {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher {
+        name = 'jfxmandel'
+    }
+}

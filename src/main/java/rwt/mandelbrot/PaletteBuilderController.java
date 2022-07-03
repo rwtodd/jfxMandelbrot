@@ -5,7 +5,7 @@
  */
 package rwt.mandelbrot;
 
-import com.waywardcode.palette.PaletteDesigner;
+import org.rwtodd.paldesign.PaletteDesigner;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
