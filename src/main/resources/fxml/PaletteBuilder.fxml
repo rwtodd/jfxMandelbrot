@@ -6,12 +6,12 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import com.waywardcode.palette.PaletteDesigner?>
+<?import org.rwtodd.paldesign.PaletteDesigner?>
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" styleClass="mainFxmlClass"  
       fx:controller="rwt.mandelbrot.PaletteBuilderController">
     <stylesheets>
-        <URL value="@/fxml/chooserStyles.css"/>
+        <URL value="@chooserStyles.css"/>
     </stylesheets>
     <PaletteDesigner fx:id="designer" />
     <ButtonBar>
