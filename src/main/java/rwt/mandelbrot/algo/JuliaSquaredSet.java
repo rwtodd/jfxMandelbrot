@@ -13,10 +13,10 @@ import rwt.mandelbrot.PixelSupplier;
  * @author Richard Todd
  */
 public final class JuliaSquaredSet extends SimpleAlgo {
-    final double addX;
-    final double addY;
-    final int depth;
-    final double escape;        
+    private final double addX;
+    private final double addY;
+    private final int depth;
+    private final double escape;
     
     public JuliaSquaredSet(double xloc, double yloc, int d, double e) {
         addX = xloc;

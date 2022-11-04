@@ -26,7 +26,7 @@ public class JFXMandelbrot extends Application {
         Pane root = (Pane)fxmlLoader.load();
         controller = (AutoCloseable) fxmlLoader.getController();
         
-        stage.setTitle("Mandelbrot Explorer");
+        stage.setTitle("JFX Mandelbrot Explorer");
         Scene scene = new Scene(root);
         
         stage.setScene(scene);

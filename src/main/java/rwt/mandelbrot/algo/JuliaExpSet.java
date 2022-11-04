@@ -11,10 +11,10 @@ package rwt.mandelbrot.algo;
  * @author richa
  */
 public final class JuliaExpSet extends SimpleAlgo  {
-    final double addX;
-    final double addY;
-    final int depth;
-    final double escape;
+    private final double addX;
+    private final double addY;
+    private final int depth;
+    private final double escape;
     
     public JuliaExpSet(double xloc, double yloc, int d, double e) {
         addX = xloc;

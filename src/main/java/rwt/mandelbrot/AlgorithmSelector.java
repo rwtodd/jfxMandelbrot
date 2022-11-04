@@ -53,21 +53,13 @@ public class AlgorithmSelector {
     
     public synchronized PixelSupplier getSupplier() {
         if(cached != null) return cached;
-                
-        switch(fractal.getValue()) {
-            case "Julia Squared Set":
-                cached = new JuliaSquaredSet(param1.get(), param2.get(), depth.get(), escape.get());
-                break;
-            case "Julia ExpZ Set":
-                cached = new JuliaExpSet(param1.get(), param2.get(), depth.get(), escape.get());
-                break;
-            case "Julia Z*ExpZ Set":
-                cached = new JuliaZExpSet(param1.get(), param2.get(), depth.get(), escape.get());
-                break;
-            default:
-                cached = new MandelbrotSet(depth.get(), escape.get());
-                break;
-        }
+
+        cached = switch (fractal.getValue()) {
+            case "Julia Squared Set" -> new JuliaSquaredSet(param1.get(), param2.get(), depth.get(), escape.get());
+            case "Julia ExpZ Set" -> new JuliaExpSet(param1.get(), param2.get(), depth.get(), escape.get());
+            case "Julia Z*ExpZ Set" -> new JuliaZExpSet(param1.get(), param2.get(), depth.get(), escape.get());
+            default -> new MandelbrotSet(depth.get(), escape.get());
+        };
         
         return cached;
     }
